@@ -1,15 +1,31 @@
-import { FETCH_DATA, TOGGLE_CHART } from "./actions";
+import { FETCH_DATA, TOGGLE_CHART, DashboardActionTypes } from "./actions";
 
-const initialState = {
+interface VisibleCharts {
+  barChart: boolean;
+  lineChart: boolean;
+  pieChart: boolean;
+  donutChart: boolean;
+}
+
+export interface RootState {
+  data: any | null;
+  visibleCharts: VisibleCharts;
+}
+
+const initialState: RootState = {
   data: null,
   visibleCharts: {
     barChart: false,
     lineChart: false,
     pieChart: false,
+    donutChart: false,
   },
 };
 
-const rootReducer = (state = initialState, action: any) => {
+const rootReducer = (
+  state = initialState,
+  action: DashboardActionTypes
+): RootState => {
   switch (action.type) {
     case FETCH_DATA:
       return {
@@ -17,7 +33,7 @@ const rootReducer = (state = initialState, action: any) => {
         data: action.payload,
       };
     case TOGGLE_CHART:
-      const chartType = action.payload as keyof typeof state.visibleCharts;
+      const chartType = action.payload;
       return {
         ...state,
         visibleCharts: {

@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
+import DonutChart from "./DonutChart";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData, toggleChart } from "./actions";
+import { RootState } from "./reducers";
 import "./styles/main.scss";
 
 const Dashboard = () => {
@@ -26,10 +28,12 @@ const Dashboard = () => {
     handleFetchData();
   }, []);
 
-  const data = useSelector((state: any) => state.data);
-  const visibleCharts = useSelector((state: any) => state.visibleCharts);
+  const data = useSelector((state: RootState) => state.data);
+  const visibleCharts = useSelector((state: RootState) => state.visibleCharts);
 
-  const handleChartToggle = (chart: "barChart" | "lineChart" | "pieChart") => {
+  const handleChartToggle = (
+    chart: "barChart" | "lineChart" | "pieChart" | "donutChart"
+  ) => {
     dispatch(toggleChart(chart));
   };
 
@@ -54,6 +58,11 @@ const Dashboard = () => {
           {visibleCharts.pieChart ? "Hide" : "Show"} User Satisfaction (Pie
           Chart)
         </button>
+
+        <button onClick={() => handleChartToggle("donutChart")}>
+          {visibleCharts.donutChart ? "Hide" : "Show"} Usage Statistics (Donut
+          Chart)
+        </button>
       </div>
 
       {visibleCharts.barChart && data && (
@@ -76,6 +85,14 @@ const Dashboard = () => {
         <div className="chart-wrapper">
           <div className="chart-container">
             <PieChart data={data.user_satisfaction} />
+          </div>
+        </div>
+      )}
+
+      {visibleCharts.donutChart && data && (
+        <div className="chart-wrapper">
+          <div className="chart-container">
+            <DonutChart data={data.usage_statistics} />
           </div>
         </div>
       )}
