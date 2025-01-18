@@ -1,79 +1,35 @@
-import React, { useState } from "react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import React from "react";
+import { Pie } from "react-chartjs-2";
+import { ChartData, ChartOptions, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS } from "chart.js";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-const LineChart = ({ data }: { data: any }) => {
-  const [isDaily, setIsDaily] = useState(true);
-  const responseTimeData = isDaily
-    ? data?.day_wise || []
-    : data?.week_wise || [];
+const PieChart = ({ data }: { data: any }) => {
+  console.log(data);
 
-  const toggleDataView = () => {
-    setIsDaily(!isDaily);
-  };
-
-  const chartData = {
-    labels: isDaily
-      ? responseTimeData.map((item: any) => item.date)
-      : responseTimeData.map((item: any) => `Week ${item.week}`),
+  const chartData: ChartData<"pie"> = {
+    labels: data.ratings.map((item: any) => `Rating ${item.rating}`),
     datasets: [
       {
-        label: isDaily
-          ? "Average Response Time (Daily)"
-          : "Average Response Time (Weekly)",
-        data: responseTimeData.map((item: any) =>
-          isDaily ? item.average_time : item.average_time
-        ),
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
+        label: "User Satisfaction",
+        data: data.ratings.map((item: any) => item.count),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+        ],
       },
     ],
   };
 
-  const options = {
+  const options: ChartOptions<"pie"> = {
     responsive: true,
-    scales: {
-      x: {
-        beginAtZero: true,
-      },
-      y: {
-        beginAtZero: true,
-      },
-    },
   };
 
-  return (
-    <div>
-      <button onClick={toggleDataView}>
-        {isDaily ? "Switch to Weekly View" : "Switch to Daily View"}
-      </button>
-      {responseTimeData.length > 0 ? (
-        <Line data={chartData} options={options} />
-      ) : (
-        <p>No data available for the chart.</p>
-      )}
-    </div>
-  );
+  return <Pie data={chartData} options={options} />;
 };
 
-export default LineChart;
+export default PieChart;
