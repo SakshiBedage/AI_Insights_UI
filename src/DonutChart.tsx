@@ -52,12 +52,12 @@ const DonutChart = ({ data }: DonutChartProps) => {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            return `${tooltipItem.label}: ${tooltipItem.raw}%`; // Display data as percentage
+            return `${tooltipItem.label}: ${tooltipItem.raw}%`;
           },
         },
       },
     },
-    cutout: "70%",
+    cutout: "50%",
   };
 
   return (
