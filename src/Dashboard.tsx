@@ -4,6 +4,7 @@ import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData, toggleChart } from "./actions";
+import "./styles/main.scss";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -15,8 +16,6 @@ const Dashboard = () => {
         throw new Error("Failed to fetch data");
       }
       const fetchedData = await response.json();
-      // console.log(fetchedData);
-
       dispatch(fetchData(fetchedData));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -25,40 +24,60 @@ const Dashboard = () => {
 
   useEffect(() => {
     handleFetchData();
-  }, [dispatch]);
+  }, []);
 
   const data = useSelector((state: any) => state.data);
   const visibleCharts = useSelector((state: any) => state.visibleCharts);
 
   const handleChartToggle = (chart: "barChart" | "lineChart" | "pieChart") => {
-    // console.log("Data passed to chart toggle:", data.response_times);
     dispatch(toggleChart(chart));
   };
 
   return (
-    <div>
+    <div className="dashboard">
       <h1>AI Insights Dashboard</h1>
 
-      <button onClick={() => handleChartToggle("barChart")}>
-        {visibleCharts.barChart ? "Hide" : "Show"} Category Distribution (Bar
-        Chart)
-      </button>
+      <div className="heading-line"></div>
+
+      <div className="button-container">
+        <button onClick={() => handleChartToggle("barChart")}>
+          {visibleCharts.barChart ? "Hide" : "Show"} Category Distribution (Bar
+          Chart)
+        </button>
+
+        <button onClick={() => handleChartToggle("lineChart")}>
+          {visibleCharts.lineChart ? "Hide" : "Show"} Response Times (Line
+          Chart)
+        </button>
+
+        <button onClick={() => handleChartToggle("pieChart")}>
+          {visibleCharts.pieChart ? "Hide" : "Show"} User Satisfaction (Pie
+          Chart)
+        </button>
+      </div>
+
       {visibleCharts.barChart && data && (
-        <BarChart data={data.category_distribution} />
+        <div className="chart-wrapper">
+          <div className="chart-container">
+            <BarChart data={data.category_distribution} />
+          </div>
+        </div>
       )}
 
-      <button onClick={() => handleChartToggle("lineChart")}>
-        {visibleCharts.lineChart ? "Hide" : "Show"} Response Times (Line Chart)
-      </button>
       {visibleCharts.lineChart && data && (
-        <LineChart data={data.response_times} />
+        <div className="chart-wrapper">
+          <div className="chart-container">
+            <LineChart data={data.response_times} />
+          </div>
+        </div>
       )}
 
-      <button onClick={() => handleChartToggle("pieChart")}>
-        {visibleCharts.pieChart ? "Hide" : "Show"} User Satisfaction (Pie Chart)
-      </button>
       {visibleCharts.pieChart && data && (
-        <PieChart data={data.user_satisfaction} />
+        <div className="chart-wrapper">
+          <div className="chart-container">
+            <PieChart data={data.user_satisfaction} />
+          </div>
+        </div>
       )}
     </div>
   );

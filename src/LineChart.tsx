@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import "./styles/main.scss";
 
 ChartJS.register(
   CategoryScale,
@@ -64,7 +65,7 @@ const LineChart = ({ data }: { data: any }) => {
   };
 
   return (
-    <div>
+    <div className="line-chart">
       <button onClick={toggleDataView}>
         {isDaily ? "Switch to Weekly View" : "Switch to Daily View"}
       </button>

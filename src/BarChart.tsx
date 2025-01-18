@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import "./styles/main.scss";
 
 import { Chart as ChartJS } from "chart.js";
 ChartJS.register(
@@ -28,6 +29,9 @@ const BarChart = ({ data }: { data: any }) => {
       {
         label: "Queries per Category",
         data: Object.values(data),
+        backgroundColor: "#36A2EB",
+        borderColor: "#36A2EB",
+        borderWidth: 1,
       },
     ],
   };
@@ -38,10 +42,20 @@ const BarChart = ({ data }: { data: any }) => {
       x: {
         beginAtZero: true,
       },
+      y: {
+        beginAtZero: true,
+      },
     },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <div className="bar-chart">
+      <h3>Category Distribution (Bar Chart)</h3>
+      <div className="chart">
+        <Bar data={chartData} options={options} />
+      </div>
+    </div>
+  );
 };
 
 export default BarChart;

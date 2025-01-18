@@ -2,12 +2,11 @@ import React from "react";
 import { Pie } from "react-chartjs-2";
 import { ChartData, ChartOptions, ArcElement, Tooltip, Legend } from "chart.js";
 import { Chart as ChartJS } from "chart.js";
+import "./styles/main.scss";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PieChart = ({ data }: { data: any }) => {
-  console.log(data);
-
   const chartData: ChartData<"pie"> = {
     labels: data.ratings.map((item: any) => `Rating ${item.rating}`),
     datasets: [
@@ -29,7 +28,14 @@ const PieChart = ({ data }: { data: any }) => {
     responsive: true,
   };
 
-  return <Pie data={chartData} options={options} />;
+  return (
+    <div className="pie-chart">
+      <h3>User Satisfaction (Pie Chart)</h3>
+      <div className="chart">
+        <Pie data={chartData} options={options} />
+      </div>
+    </div>
+  );
 };
 
 export default PieChart;
